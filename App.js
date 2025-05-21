@@ -1,6 +1,6 @@
 import React from 'react';
-import AppNavigator from './navigation/AppNavigator';
-import { CartProvider } from './context/CartContext';
+import AppNavigator from './src/navigation/AppNavigator';
+import { CartProvider } from './src/context/CartContext';
 
 
 export default function App() {
