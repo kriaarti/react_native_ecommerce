@@ -29,14 +29,42 @@ export default function ProductListScreen({ navigation }) {
   );
 }
 
+// const styles = StyleSheet.create({
+//   container: { padding: 10 },
+//   card: {
+//     flex: 1,
+//     margin: 8,
+//     padding: 10,
+//     backgroundColor: '#eee',
+//     borderRadius: 8,
+//   },
+//   image: { height: 100, resizeMode: 'contain' },
+// });
+
 const styles = StyleSheet.create({
-  container: { padding: 10 },
+  container: {
+    padding: 10,
+    backgroundColor: '#fff', // Full white background for the screen
+  },
   card: {
     flex: 1,
     margin: 8,
     padding: 10,
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
     borderRadius: 8,
+
+    // iOS shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+
+    // Android shadow
+    elevation: 3,
   },
-  image: { height: 100, resizeMode: 'contain' },
+  image: {
+    height: 100,
+    resizeMode: 'contain',
+  },
 });
+

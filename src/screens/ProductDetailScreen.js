@@ -1,18 +1,41 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import CartContext from '../context/CartContext';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Feather';
+
+import CartContext from '../context/CartContext';
 
 export default function ProductDetailScreen({ route }) {
   const { product } = route.params;
-  const { dispatch } = useContext(CartContext);
+  const { cart, dispatch } = useContext(CartContext);
   const navigation = useNavigation();
+
+  const cartItemCount = cart.items.length;
+  console.log(cartItemCount,'cartItemCount')
 
   const handleAddToCart = () => {
     dispatch({ type: 'ADD_TO_CART', payload: product });
     console.log('Added to cart:', product.title);
-    navigation.navigate('Cart'); 
   };
+
+useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={{ marginRight: 15 }}>
+        <View style={styles.iconContainer}>
+          <Icon name="shopping-cart" size={28} color="#000" />
+          {cartItemCount > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{cartItemCount}</Text>
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
+    ),
+  });
+}, [navigation, cartItemCount]);
+
+
 
   return (
     <View style={styles.container}>
@@ -32,7 +55,7 @@ export default function ProductDetailScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16 },
+  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
   image: { height: 200, resizeMode: 'contain', marginBottom: 16 },
   title: { fontSize: 18, fontWeight: 'bold', marginBottom: 8 },
   price: { fontSize: 16, marginBottom: 8 },
@@ -49,4 +72,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+iconContainer: {
+  position: 'relative',
+  width: 30,
+  height: 30,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+badge: {
+  position: 'absolute',
+  top: -4,
+  right: -4,
+  backgroundColor: 'red',
+  borderRadius: 10,
+  height: 18,
+  minWidth: 18,
+  paddingHorizontal: 4,
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 999,
+},
+
+badgeText: {
+  color: '#fff',
+  fontSize: 10,
+  fontWeight: 'bold',
+},
+
 });

@@ -41,7 +41,7 @@ export default function CartScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
+  container: { flex: 1, padding: 16, backgroundColor: '#fff' }, // White background
   total: { fontSize: 18, fontWeight: 'bold', marginTop: 10 },
   empty: { textAlign: 'center', marginTop: 50, fontSize: 16 },
 });

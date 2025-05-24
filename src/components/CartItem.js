@@ -1,53 +1,100 @@
 import React from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-export default function CartItem({ item, onRemove, onQuantityChange }) {
+export default function CartItem({ item, onQuantityChange, onRemove }) {
+  const increase = () => onQuantityChange(item.id, item.quantity + 1);
+  const decrease = () => {
+    if (item.quantity > 1) {
+      onQuantityChange(item.id, item.quantity - 1);
+    }
+  };
+console.log('Item name:', item);
   return (
-    <View style={styles.container}>
+    <View style={styles.itemContainer}>
       <Image source={{ uri: item.image }} style={styles.image} />
+
       <View style={styles.info}>
-        <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
+        <Text style={styles.name} numberOfLines={1}>
+          {item.title}
+        </Text>
         <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-        <TextInput
-          style={styles.input}
-          keyboardType="numeric"
-          value={item.quantity.toString()}
-          onChangeText={val => onQuantityChange(item.id, parseInt(val) || 1)}
-        />
-        <Button title="Remove" onPress={() => onRemove(item)} />
+
+        <View style={styles.controls}>
+          <TouchableOpacity onPress={decrease} style={styles.button}>
+            <Text style={styles.buttonText}>−</Text>
+          </TouchableOpacity>
+          <Text style={styles.quantity}>{item.quantity}</Text>
+          <TouchableOpacity onPress={increase} style={styles.button}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => onRemove(item)} style={styles.removeButton}>
+            <Text style={styles.removeText}>Remove</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  itemContainer: {
     flexDirection: 'row',
-    paddingVertical: 10,
-    alignItems: 'center',
+    padding: 12,
     borderBottomWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#eee',
+    backgroundColor: '#fff',
+    gap: 12,
+    alignItems: 'flex-start',
   },
   image: {
-    width: 60,
-    height: 60,
-    resizeMode: 'contain',
+    width: 70,
+    height: 70,
+    borderRadius: 8,
+    backgroundColor: '#f2f2f2',
   },
   info: {
     flex: 1,
-    marginLeft: 10,
+    justifyContent: 'space-between',
   },
-  title: {
+ name: {
+  fontSize: 16,
+  fontWeight: '600',
+  color: '#000', // Ensure visible text color
+  marginBottom: 4,
+},
+
+  price: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 4,
+  },
+  controls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flexWrap: 'wrap',
+  },
+  button: {
+    width: 32,
+    height: 32,
+    borderRadius: 4,
+    backgroundColor: '#ddd',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 18,
     fontWeight: 'bold',
   },
-  price: {
-    color: '#444',
+  quantity: {
+    fontSize: 16,
+    marginHorizontal: 4,
   },
-  input: {
-    borderWidth: 1,
-    width: 50,
-    padding: 5,
-    textAlign: 'center',
-    marginVertical: 5,
+  removeButton: {
+    marginLeft: 12,
+  },
+  removeText: {
+    color: 'red',
   },
 });
